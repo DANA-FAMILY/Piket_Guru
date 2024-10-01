@@ -102,9 +102,3 @@ onMounted(() => {
   totalrekapkelas();
 });
 </script>
-
-  onMounted(() => {
-    getrekapkelas()
-    totalrekapkelas()
-  })
-</script>
