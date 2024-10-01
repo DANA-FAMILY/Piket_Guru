@@ -65,7 +65,6 @@ table, th, td {
 </style>
 
 <script setup>
-
 const supabase = useSupabaseClient();
 
 const visitors = ref([]);
