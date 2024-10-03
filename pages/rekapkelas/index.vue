@@ -5,7 +5,6 @@
         <h2 class="text-center my-3">REKAPITULASI ABSENSI KELAS</h2>
         <div class="my-3 d-flex justify-content-end gap-3">
           <button type="button" class="btn btn-success btn-lg rounded-5 px-5" @click="printTable">Print</button>
-          <button type="button" class="btn btn-secondary btn-lg rounded-5 px-5" @click="downloadPDF">Download PDF</button>
         </div>
         <form @submit.prevent="getrekapkelas">
           <div class="my-3">
@@ -72,8 +71,6 @@ table, th, td {
 </style>
 
 <script setup>
-import jsPDF from 'jspdf';
-import autoTable from 'jspdf-autotable'; // Plugin untuk menambahkan tabel ke PDF
 
 const supabase = useSupabaseClient();
 const visitors = ref([]);
@@ -138,43 +135,6 @@ const printTable = () => {
   window.location.reload();
 };
 
-const downloadPDF = () => {
-  const doc = new jsPDF();
-  
-  // Menambahkan Navbar
-  const navbar = document.getElementById('navbar').innerText;
-  doc.setFontSize(12);
-  doc.text(navbar, 14, 10); // Menggambar navbar pada PDF, sesuaikan posisi X dan Y
-  
-  // Menambahkan Judul
-  doc.setFontSize(16);
-  doc.text('Rekapitulasi Absensi Kelas', 14, 25);
-  
-  // Menambahkan Tabel
-  autoTable(doc, {
-    head: [[
-      'No', 'Tanggal', 'Kelas', 'Guru Ngajar', 'Total', 'Hadir', 'Tidak Hadir', 'S', 'I', 'A', 'D'
-    ]],
-    body: visitors.value.map((visitor, index) => [
-      index + 1,
-      visitor.tanggal,
-      visitor.kelas.nama,
-      visitor.namaguru.NamaGuru,
-      visitor.total,
-      visitor.hadir,
-      visitor.tidak_hadir,
-      visitor.sakit,
-      visitor.izin,
-      visitor.alpa,
-      visitor.dispen
-    ]),
-    startY: 30, // Mengatur posisi mulai tabel di bawah navbar dan judul
-    theme: 'grid'
-  });
-
-  // Menyimpan file PDF
-  doc.save('Rekapitulasi_Absensi_Kelas.pdf');
-};
 
 onMounted(() => {
   getrekapkelas();
