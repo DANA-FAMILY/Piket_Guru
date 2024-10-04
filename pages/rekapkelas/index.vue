@@ -5,7 +5,6 @@
         <h2 class="text-center my-3">REKAPITULASI ABSENSI KELAS</h2>
         <div class="my-3 d-flex justify-content-end gap-3">
           <button type="button" class="btn btn-success btn-lg rounded-5 px-5" @click="printTable">Print</button>
-          <button type="button" class="btn btn-secondary btn-lg rounded-5 px-5" @click="downloadPDF">Download PDF</button>
         </div>
         <form @submit.prevent="getrekapkelas">
           <div class="my-3">
@@ -54,7 +53,7 @@
           </div>
         </form>
       </div>
-      <h6 class="p-3 text-end mt-5">......................................</h6>
+      <h6 class="p-3 text-end mt-5">................................</h6>
       <NuxtLink to="/rekapkelas/absen" class="col-lg-6 d-flex justify-content-end">
         <button type="button" class="btn btn-primary btn-lg rounded-5 px-5">Tambah Data</button>
       </NuxtLink>
