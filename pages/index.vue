@@ -50,7 +50,7 @@ async function login() {
 if(!error){
   navigateTo('/home')
 } else {
-  alert("Mohon Maaf Kata Sandi Salah")
+  alert("Your password or email invalid")
 }
 }
 
