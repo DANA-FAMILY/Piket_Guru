@@ -9,7 +9,7 @@
           </NuxtLink>
           <div class="mb-3">
             <select v-model="form.namaguru" class="form-control form-control-lg form-select rounded-5 mb-2">
-              <option value="" selected>Nama Guru Ngajar</option>
+              <option value="" selected>Nama Guru Mengajar</option>
               <option v-for="(member,i) in members" :key="i" :value="member.id">{{ member.NamaGuru }}</option>
             </select>
           </div>
