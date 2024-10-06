@@ -47,7 +47,6 @@ const form = ref({
   waktu: "",
   kelas: "",
   keperluan: "",
-  waktu_kembali: "",
 })
 
 const KirimData = async () => {
