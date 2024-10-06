@@ -23,9 +23,6 @@
       <div class="mb-3">
         <input v-model="form.waktu" type="time" placeholder="waktu kembali" class="form-control form-control-lg rounded-3">
       </div>
-      <div class="mb-3">
-        <input v-model="form.waktu_kembali" type="time" placeholder="waktu kembali" class="form-control form-control-lg rounded-3">
-      </div>
       <div class="kirim col-lg-6 d-flex justify-content-start">
           <button type="submit" class="btn btn-primary btn-lg rounded-5 px-5">kirim</button>
           <NuxtLink to="/home">
