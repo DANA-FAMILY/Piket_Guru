@@ -139,40 +139,6 @@ const printCards = () => {
   const printContents = document.getElementById('printCardArea').innerHTML;
   const originalContents = document.body.innerHTML;
 
-  document.body.innerHTML = `
-    <html>
-      <head>
-        <title>Print</title>
-        <style>
-          @media print {
-            body {
-              margin: 0;
-              padding: 0;
-              -webkit-print-color-adjust: exact;
-            }
-            #printCardArea {
-              display: flex;
-              flex-wrap: wrap;
-            }
-            .col-print-6 {
-              width: 50%;
-              box-sizing: border-box;
-              padding: 10px;
-            }
-            .card {
-              page-break-inside: avoid;
-              break-inside: avoid;
-              height: 95vh; /* Mengatur tinggi kartu agar tepat setengah halaman dalam mode potret */
-            }
-          }
-        </style>
-      </head>
-      <body>
-        <div id="printCardArea">${printContents}</div>
-      </body>
-    </html>
-  `;
-
   window.print();
   document.body.innerHTML = originalContents;
 
