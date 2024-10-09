@@ -77,11 +77,16 @@
   .d-none {
     display: none; /* Sembunyikan elemen pada tampilan biasa */
   }
-  
+
   .d-print-inline {
     display: inline; /* Tampilkan elemen pada tampilan cetak */
   }
+
+  .d-print-none {
+    display: none !important; /* Sembunyikan elemen pada tampilan cetak */
+  }
 }
+
 </style>
 
 <script setup>
