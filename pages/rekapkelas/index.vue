@@ -49,11 +49,11 @@
                 </tr>
               </tbody>
             </table>
-            <h6 class="text-end mt-5">Tasikmalaya,...,...,20..</h6>
+            <!-- <h6 class="text-end mt-5">Tasikmalaya,...,...,20..</h6> -->
           </div>
         </form>
       </div>
-      <h6 class="p-3 text-end mt-5">................................</h6>
+      <!-- <h6 class="p-3 text-end mt-5">......................................</h6> -->
       <NuxtLink to="/rekapkelas/absen" class="col-lg-6 d-flex justify-content-end">
         <button type="button" class="btn btn-primary btn-lg rounded-5 px-5">Tambah Data</button>
       </NuxtLink>
@@ -106,10 +106,23 @@ const onDateChange = () => {
   totalrekapkelas();
 };
 
+const getFormattedTodayDate = () => {
+  const today = new Date();
+  const day = String(today.getDate()).padStart(2, '0');
+  const month = String(today.getMonth() + 1).padStart(2, '0');
+  const year = today.getFullYear();
+  return `${day}/${month}/${year}`;
+};
+
+
 const printTable = () => {
   const navbar = document.getElementById('navbar').outerHTML; // Ambil isi navbar
   const printContents = document.getElementById('printableArea').innerHTML; // Ambil isi tabel
-  const tandaTangan = '<h6 class="text-end mt-5">......................................</h6>';
+  const formattedDate = getFormattedTodayDate();
+  const tandaTangan = `
+    <h6 class="text-end mt-5">Tasikmalaya, ${formattedDate}</h6>
+    <h6 class="text-end mt-5">............................................</h6>
+  `;
   const originalContents = document.body.innerHTML;
 
   document.body.innerHTML = `
