@@ -21,6 +21,7 @@
         <input v-model="form.keperluan" type="text" class="form-control form-control-lg rounded-5" placeholder="Keperluan..">
       </div>
       <div class="mb-3">
+        <label for="waktu">Waktu Berangkat:</label>
         <input v-model="form.waktu" type="time" placeholder="waktu kembali" class="form-control form-control-lg rounded-3">
       </div>
       <div class="kirim col-lg-6 d-flex justify-content-start">
