@@ -2,160 +2,152 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-lg-12">
-        <h2 class="text-center my-3">REKAPITULASI ABSENSI KELAS</h2>
-        <div class="my-3 d-flex justify-content-end gap-3">
-          <button type="button" class="btn btn-success btn-lg rounded-5 px-5" @click="printTable">Print</button>
-        </div>
-        <form @submit.prevent="getrekapkelas">
-          <div class="my-3">
-            <label for="tanggal">Pilih Tanggal:</label>
-            <input type="date" id="tanggal" v-model="selectedDate" @change="onDateChange" />
+        <h2 class="text-center p-1 m-1">Presensi Kelas</h2>
+        <form @submit.prevent="KirimData">
+          <NuxtLink to="/rekapkelas" class="d-flex justify-content-end text-decoration-none">
+            <p>Riwayat Presensi Kelas</p>
+          </NuxtLink>
+          <div class="mb-3">
+            <select v-model="form.namaguru" class="form-control form-control-lg form-select rounded-5 mb-2">
+              <option value="" selected>Nama Guru Ngajar</option>
+              <option v-for="(member, i) in members" :key="i" :value="member.id">{{ member.NamaGuru }}</option>
+            </select>
           </div>
-          <div class="my-3 text-muted">
-            menampilkan {{ visitors.length }} dari {{ jumlah }}
+          <div class="mb-3">
+            <select v-model="form.kelas" class="form-control form-control-lg form-select rounded-5 mb-2">
+              <option value="">Kelas</option>
+              <option v-for="(item, i) in objectives" :key="i" :value="item.id">{{ item.nama }}</option>
+            </select>
           </div>
-          <div id="printableArea">
-            <table style="width:100%" class="table text-center">
-              <tr>
-                <th rowspan="2">No</th>
-                <th rowspan="2">Tanggal</th>
-                <th rowspan="2">Kelas</th>
-                <th rowspan="2">Guru Ngajar</th>
-                <th colspan="3">Jumlah Siswa</th>
-                <th colspan="5">Keterangan</th>
-              </tr>
-              <tr>
-                <th>Total</th>
-                <th>Hadir</th>
-                <th>Tidak Hadir</th>
-                <th>S</th>
-                <th>I</th>
-                <th>A</th>
-                <th>D</th>
-              </tr>
-              <tbody>
-                <tr v-for="(visitor, i) in visitors" :key="i">
-                  <td>{{ i + 1 }}</td>
-                  <td>{{ visitor.tanggal }}</td>
-                  <td>{{ visitor.kelas.nama }}</td>
-                  <td>{{ visitor.namaguru.NamaGuru }}</td>
-                  <td>{{ visitor.total }}</td>
-                  <td>{{ visitor.hadir }}</td>
-                  <td>{{ visitor.tidak_hadir }}</td>
-                  <td>{{ visitor.sakit }}</td>
-                  <td>{{ visitor.izin }}</td>
-                  <td>{{ visitor.alpa }}</td>
-                  <td>{{ visitor.dispen }}</td>
-                </tr>
-              </tbody>
-            </table>
-            <!-- <h6 class="text-end mt-5">Tasikmalaya,...,...,20..</h6> -->
+          <div class="col-md-12">
+            <input v-model="form.total" type="number" class="form-control form-control-lg rounded-5" placeholder="Total Siswa.." />
+          </div>
+          <div class="mb-4">
+            <div class="row">
+              <div class="col-md-4 p-2">
+                <input v-model="form.hadir" @input="updateTidakHadir" type="number" class="form-control form-control-lg rounded-5" placeholder="Hadir.." />
+              </div>
+              <div class="col-md-4 p-2">
+                <input v-model="form.tidak_hadir" type="number" class="form-control form-control-lg rounded-5" placeholder="Tidak Hadir.." disabled />
+              </div>
+              <div class="col-md-4 p-2">
+                <input v-model="form.sakit" @input="validateForm" type="number" class="form-control form-control-lg rounded-5" placeholder="Sakit.." />
+              </div>
+              <div class="col-md-4 p-2">
+                <input v-model="form.izin" @input="validateForm" type="number" class="form-control form-control-lg rounded-5" placeholder="Izin.." />
+              </div>
+              <div class="col-md-4 p-2">
+                <input v-model="form.alpa" @input="validateForm" type="number" class="form-control form-control-lg rounded-5" placeholder="Alpa.." />
+              </div>
+              <div class="col-md-4 p-2">
+                <input v-model="form.dispen" @input="validateForm" type="number" class="form-control form-control-lg rounded-5" placeholder="Dispen.." />
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 d-flex justify-content-start">
+            <button type="submit" class="btn btn-primary btn-lg rounded-5 px-5">Kirim</button>
+            <NuxtLink to="/home">
+              <button type="submit" class="btn btn-primary btn-lg rounded-5 px-5">Kembali</button>
+            </NuxtLink>
           </div>
         </form>
       </div>
-      <!-- <h6 class="p-3 text-end mt-5">......................................</h6> -->
-      <NuxtLink to="/rekapkelas/absen" class="col-lg-6 d-flex justify-content-end">
-        <button type="button" class="btn btn-primary btn-lg rounded-5 px-5">Tambah Data</button>
-      </NuxtLink>
-      <NuxtLink to="/home" class="col-lg-6 d-flex justify-content-start">
-        <button type="button" class="btn btn-primary btn-lg rounded-5 px-5">Kembali</button>
-      </NuxtLink>
     </div>
   </div>
 </template>
 
-
-<style scoped>
-table, th, td {
-  border: 1px solid black;
-  border-collapse: collapse;
-}
-</style>
-
 <script setup>
+const supabase = useSupabaseClient()
 
-const supabase = useSupabaseClient();
-const visitors = ref([]);
-const jumlah = ref(0);
-const selectedDate = ref(getTodayDate());
+const members = ref([])
+const objectives = ref([])
 
-function getTodayDate() {
-  return new Date().toISOString().split('T')[0];
+const form = ref({
+  namaguru: "",
+  kelas: "",
+  total: "",
+  hadir: "",
+  tidak_hadir: "",
+  sakit: "",
+  izin: "",
+  alpa: "",
+  dispen: "",
+})
+
+// Fungsi untuk mengosongkan form
+const resetForm = () => {
+  form.value = {
+    namaguru: "",
+    kelas: "",
+    total: "",
+    hadir: "",
+    tidak_hadir: "",
+    sakit: "",
+    izin: "",
+    alpa: "",
+    dispen: "",
+  }
 }
 
-const getrekapkelas = async (date = selectedDate.value) => {
-  const { data, error } = await supabase
-    .from('rekapkelas')
-    .select(`*, namaguru(NamaGuru), kelas(nama)`)
-    .eq('tanggal', date);
-  if (data) {
-    visitors.value = data.sort((a, b) => new Date(b.tanggal) - new Date(a.tanggal));
+// Fungsi untuk menghitung otomatis "Tidak Hadir"
+const updateTidakHadir = () => {
+  if (form.value.total && form.value.hadir >= 0) {
+    const totalTidakHadir = form.value.total - form.value.hadir
+    form.value.tidak_hadir = totalTidakHadir >= 0 ? totalTidakHadir : 0
   }
-};
+}
 
-const totalrekapkelas = async (date = selectedDate.value) => {
-  const { data, count } = await supabase
-    .from('rekapkelas')
-    .select("*", { count: 'exact' })
-    .eq('tanggal', date);
-  if (data) jumlah.value = count;
-};
+// Fungsi untuk memvalidasi jumlah sakit, izin, alpa, dispen
+const validateForm = () => {
+  const totalTidakHadir = form.value.total - form.value.hadir
+  const totalInputTidakHadir = parseInt(form.value.sakit || 0) +
+                                parseInt(form.value.izin || 0) +
+                                parseInt(form.value.alpa || 0) +
+                                parseInt(form.value.dispen || 0)
 
-const onDateChange = () => {
-  getrekapkelas();
-  totalrekapkelas();
-};
+  // Jika total input lebih besar dari total siswa yang tidak hadir, berikan peringatan
+  if (totalInputTidakHadir > totalTidakHadir) {
+    alert(`Jumlah Sakit + Izin + Alpa + Dispen tidak sesuai dengan ${totalTidakHadir}`)
+    form.value.sakit = 0
+    form.value.izin = 0
+    form.value.alpa = 0
+    form.value.dispen = 0
+  }
+}
 
-const getFormattedTodayDate = () => {
-  const today = new Date();
-  const day = String(today.getDate()).padStart(2, '0');
-  const month = String(today.getMonth() + 1).padStart(2, '0');
-  const year = today.getFullYear();
-  return `${day}/${month}/${year}`;
-};
+const KirimData = async () => {
+  const totalTidakHadir = form.value.total - form.value.hadir
+  const totalInputTidakHadir = parseInt(form.value.sakit || 0) +
+                                parseInt(form.value.izin || 0) +
+                                parseInt(form.value.alpa || 0) +
+                                parseInt(form.value.dispen || 0)
 
+  // Validasi akhir sebelum kirim data
+  if (totalInputTidakHadir > totalTidakHadir) {
+    alert(`Jumlah Sakit + Izin + Alpa + Dispen tidak boleh lebih dari ${totalTidakHadir}`)
+    return
+  }
 
-const printTable = () => {
-  const navbar = document.getElementById('navbar').outerHTML; // Ambil isi navbar
-  const printContents = document.getElementById('printableArea').innerHTML; // Ambil isi tabel
-  const formattedDate = getFormattedTodayDate();
-  const tandaTangan = `
-    <h6 class="text-end mt-5">Tasikmalaya, ${formattedDate}</h6>
-    <h6 class="text-end mt-5">............................................</h6>
-  `;
-  const originalContents = document.body.innerHTML;
+  console.log(form.value)
+  const { error } = await supabase.from('rekapkelas').insert([form.value])
+  if (!error) {
+    alert("Presensi Berhasil")
+    resetForm() // Mengosongkan form setelah berhasil kirim data
+  }
+}
 
-  document.body.innerHTML = `
-    <html>
-      <head>
-        <title>Print</title>
-        <style>
-          table, th, td {
-            border: 1px solid black;
-            border-collapse: collapse;
-            text-align: center;
-          }
-        </style>
-      </head>
-      <body>
-        ${navbar}
-        <h2 class="text-center">REKAPITULASI ABSENSI KELAS</h2>
-        ${printContents}
-        ${tandaTangan}
-      </body>
-    </html>
-  `;
+const getGuru = async () => {
+  const { data, error } = await supabase.from('guru').select('*')
+  if (data) members.value = data
+}
 
-  window.print();
-  document.body.innerHTML = originalContents; 
-
-  window.location.reload();
-};
-
+const getKelas = async () => {
+  const { data, error } = await supabase.from('kelas').select('*')
+  if (data) objectives.value = data
+}
 
 onMounted(() => {
-  getrekapkelas();
-  totalrekapkelas();
-});
-
+  getGuru()
+  getKelas()
+})
 </script>
