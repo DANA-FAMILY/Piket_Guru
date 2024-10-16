@@ -4,9 +4,14 @@
       <div class="col-lg-12">
         <h2 class="text-center p-1 m-1">Presensi Kelas</h2>
         <form @submit.prevent="KirimData">
-          <NuxtLink to="/rekapkelas" class="d-flex justify-content-end text-decoration-none">
-            <p>Riwayat Presensi Kelas</p>
+          <div class="col-lg-12 d-flex justify-content-end ">
+              <NuxtLink to="/kehadiran/tambah" class="text-decoration-none p-3">
+            <p>Kehadiran Guru</p>
+              </NuxtLink>
+          <NuxtLink to="/rekapkelas" class="text-decoration-none p-3">
+            <p>Riwayat Prensensi kelas</p>
           </NuxtLink>
+          </div>
           
           <!-- Input Nama Guru -->
           <div class="mb-3">
