@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-lg-12">
-        <h2 class="text-center my-3">REKAPITULASI IZIN TAMU</h2>
+        <h2 class="text-center my-3">FORM IZIN TAMU</h2>
         <form @submit.prevent="KirimData">
         <div class="my-3">
           <NuxtLink to="/rekapizintamu" class="d-flex justify-content-end text-decoration-none">
