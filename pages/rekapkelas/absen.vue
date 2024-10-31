@@ -136,8 +136,9 @@ const KirimData = async () => {
                                 parseInt(form.value.alpa || 0) +
                                 parseInt(form.value.dispen || 0)
 
-  if (totalInputTidakHadir > totalTidakHadir) {
-    alert(`Jumlah Sakit + Izin + Alpa + Dispen tidak boleh lebih dari ${totalTidakHadir}`)
+  // Pastikan nilai `sakit`, `izin`, `alpa`, `dispen` sesuai dengan `tidak_hadir`
+  if (totalInputTidakHadir !== totalTidakHadir) {
+    alert(`Jumlah Sakit + Izin + Alpa + Dispen harus sama dengan ${totalTidakHadir}`)
     return
   }
 
