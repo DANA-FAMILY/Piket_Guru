@@ -1,7 +1,7 @@
 <template>
   <div class="container-fluid">
     <!-- Header Section -->
-    <div class="header d-flex justify-content-end p-3">
+    <div class="header d-flex justify-content-end p-0">
       <form @submit.prevent="signOut">
         <button type="submit" :disabled="isLoading" class="btn btn-primary">Log out</button>
       </form>
@@ -53,7 +53,7 @@
 
 .header {
   position: absolute;
-  top: 0;
+  top: 5;
   right: 0;
   z-index: 10;
 }
