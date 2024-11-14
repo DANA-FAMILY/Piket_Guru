@@ -1,5 +1,13 @@
 <template>
   <div class="container-fluid">
+    <!-- Header Section -->
+    <div class="header d-flex justify-content-end p-3">
+      <form @submit.prevent="signOut">
+        <button type="submit" :disabled="isLoading" class="btn btn-primary">Log out</button>
+      </form>
+    </div>
+
+    <!-- Main Content Section -->
     <div class="row my-5 rounded-5">
       <div class="row d-flex justify-content-center">
         <div class="col-lg-6">
@@ -30,10 +38,8 @@
           </div>
         </nuxt-link>
       </div>
-      <form @submit.prevent="signOut">
-        <button type="submit" :disabled="isLoading">Log out</button>
-      </form>
     </div>
+
     <div v-if="isLoading" class="loading-overlay">
       <div class="spinner"></div>
     </div>
@@ -44,22 +50,33 @@
 .container-fluid {
   position: relative;
 }
+
+.header {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 10;
+}
+
 .card {
   height: 250px;
   box-shadow: 1px 1px 10px #424242;
 }
+
 .card.bg-kelas {
   background-image: url("../assets/img/kelas.jpg");
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
 }
+
 .card.bg-loby, .card.bg-tamu {
   background-image: url("../assets/img/ruangan.webp");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
 }
+
 .loading-overlay {
   position: fixed;
   top: 0;
@@ -72,6 +89,7 @@
   align-items: center;
   z-index: 1000;
 }
+
 .spinner {
   width: 50px;
   height: 50px;
@@ -80,6 +98,7 @@
   border-radius: 50%;
   animation: spin 100s linear infinite;
 }
+
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
@@ -97,6 +116,5 @@ async function signOut() {
   if (!error) {
     navigateTo('/');
   }
-}
+} 
 </script>
-
