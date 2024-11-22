@@ -26,7 +26,7 @@
       </div>
       <!-- Anggota 2 -->
       <div class="col-lg-3 col-md-4 col-sm-6 d-flex flex-column justify-content-center align-items-center my-3">
-        <img src="/assets/img/poto1.jpg" alt="Anggota 2" width="150" height="150" class="rounded-circle">
+        <img src="/assets/img/irgic.jpg" alt="Anggota 2" width="150" height="150" class="rounded-circle">
         <h3 class="mt-3">Irgi Cahya</h3>
         <p class="text-center">Desain</p>
       </div>
@@ -37,7 +37,7 @@
         <p class="text-center">Backend</p>
       </div>
       <div class="col-lg-3 col-md-4 col-sm-6 d-flex flex-column justify-content-center align-items-center my-3">
-        <img src="/assets/img/poto1.jpg" alt="Anggota 3" width="150" height="150" class="rounded-circle">
+        <img src="/assets/img/ndri.jpg" alt="Anggota 3" width="150" height="150" class="rounded-circle">
         <h3 class="mt-3">Gilang A</h3>
         <p class="text-center">Prototipe</p>
       </div>
