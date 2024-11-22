@@ -15,7 +15,7 @@
           <!-- Input Nama Guru -->
           <div class="mb-3">
             <select v-model="form.namaguru" class="form-control form-control-lg form-select rounded-5 mb-2" required >
-              <option value="Nama Guru Mengajar" selected>Nama Guru Mengajar</option>
+              <option value="" selected>Nama Guru Mengajar</option>
               <option v-for="(member, i) in members" :key="i" :value="member.id">{{ member.NamaGuru }}</option>
             </select>
           </div>
