@@ -20,7 +20,7 @@
     <div class="row d-flex justify-content-center">
       <!-- Anggota 1 -->
       <div class="col-lg-3 col-md-4 col-sm-6 d-flex flex-column justify-content-center align-items-center my-3">
-        <img src="/assets/img/poto1.jpg" alt="Anggota 1" width="150" height="150" class="rounded-circle">
+        <img src="/assets/img/DSC07312.jpg" alt="Anggota 1" width="150" height="150" class="rounded-circle">
         <h3 class="mt-3">Ega Suzana</h3>
         <p class="text-center">Front end</p>
       </div>
@@ -32,7 +32,7 @@
       </div>
       <!-- Anggota 3 -->
       <div class="col-lg-3 col-md-4 col-sm-6 d-flex flex-column justify-content-center align-items-center my-3">
-        <img src="/assets/img/poto1.jpg" alt="Anggota 3" width="150" height="150" class="rounded-circle">
+        <img src="/assets/img/IMG-20241122-WA0010.jpg" alt="Anggota 3" width="150" height="150" class="rounded-circle">
         <h3 class="mt-3">Sani Sahrul M</h3>
         <p class="text-center">Backend</p>
       </div>
