@@ -14,14 +14,14 @@
           </div>
           <!-- Input Nama Guru -->
           <div class="mb-3">
-            <select v-model="form.namaguru" class="form-control form-control-lg form-select rounded-5 mb-2">
+            <select v-model="form.namaguru" class="form-control form-control-lg form-select rounded-5 mb-2" required >
               <option value="Nama Guru Mengajar" selected>Nama Guru Mengajar</option>
               <option v-for="(member, i) in members" :key="i" :value="member.id">{{ member.NamaGuru }}</option>
             </select>
           </div>
           <!-- Input Kelas -->
           <div class="mb-3">
-            <select v-model="form.kelas" class="form-control form-control-lg form-select rounded-5 mb-2">
+            <select v-model="form.kelas" class="form-control form-control-lg form-select rounded-5 mb-2" required>
               <option value="">Kelas</option>
               <option v-for="(item, i) in objectives" :key="i" :value="item.id">{{ item.nama }}</option>
             </select>
@@ -29,31 +29,31 @@
           
           <!-- Input Total Siswa -->
           <div class="col-md-12">
-            <input v-model="form.total" type="number" class="form-control form-control-lg rounded-5" placeholder="Total Siswa.." />
+            <input v-model="form.total" type="number" class="form-control form-control-lg rounded-5" placeholder="Total Siswa.."  required />
           </div>
           
           <!-- Input Hadir dan Tidak Hadir -->
           <div class="mb-4">
             <div class="row">
               <div class="col-md-4 p-2">
-                <input v-model="form.hadir" @input="updateTidakHadir" type="number" class="form-control form-control-lg rounded-5" placeholder="Hadir.." />
+                <input v-model="form.hadir" @input="updateTidakHadir" type="number" class="form-control form-control-lg rounded-5" placeholder="Hadir.." required />
               </div>
               <div class="col-md-4 p-2">
-                <input v-model="form.tidak_hadir" type="number" class="form-control form-control-lg rounded-5" placeholder="Tidak Hadir.." disabled />
+                <input v-model="form.tidak_hadir" type="number" class="form-control form-control-lg rounded-5" placeholder="Tidak Hadir.." disabled required />
               </div>
               
               <!-- Input Sakit, Izin, Alpa, Dispen -->
               <div class="col-md-4 p-2">
-                <input v-model="form.sakit" @input="validateForm" type="number" class="form-control form-control-lg rounded-5" placeholder="Sakit.." />
+                <input v-model="form.sakit" @input="validateForm" type="number" class="form-control form-control-lg rounded-5" placeholder="Sakit.." required />
               </div>
               <div class="col-md-4 p-2">
-                <input v-model="form.izin" @input="validateForm" type="number" class="form-control form-control-lg rounded-5" placeholder="Izin.." />
+                <input v-model="form.izin" @input="validateForm" type="number" class="form-control form-control-lg rounded-5" placeholder="Izin.." required />
               </div>
               <div class="col-md-4 p-2">
-                <input v-model="form.alpa" @input="validateForm" type="number" class="form-control form-control-lg rounded-5" placeholder="Alpa.." />
+                <input v-model="form.alpa" @input="validateForm" type="number" class="form-control form-control-lg rounded-5" placeholder="Alpa.." required />
               </div>
               <div class="col-md-4 p-2">
-                <input v-model="form.dispen" @input="validateForm" type="number" class="form-control form-control-lg rounded-5" placeholder="Dispen.." />
+                <input v-model="form.dispen" @input="validateForm" type="number" class="form-control form-control-lg rounded-5" placeholder="Dispen.." required />
               </div>
             </div>
           </div>
@@ -81,12 +81,12 @@ const members = ref([])
 const form = ref({
   kelas: "",
   total: "",
-  hadir: "",
+  hadir: 0,
   tidak_hadir: "",
-  sakit: "",
-  izin: "",
-  alpa: "",
-  dispen: "",
+  sakit: 0,
+  izin: 0,
+  alpa: 0,
+  dispen: 0,
 })
 
 // Fungsi untuk mengosongkan form
@@ -94,12 +94,12 @@ const resetForm = () => {
   form.value = {
     kelas: "",
     total: "",
-    hadir: "",
+    hadir: 0,
     tidak_hadir: "",
-    sakit: "",
-    izin: "",
-    alpa: "",
-    dispen: "",
+    sakit: 0,
+    izin: 0,
+    alpa: 0,
+    dispen: 0,
   }
 }
 
