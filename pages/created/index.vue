@@ -10,10 +10,8 @@
     </div>
 
     <!-- Foto Utama -->
-    <div class="row">
-      <div class="col-lg-12 d-flex justify-content-center align-items-center my-3">
-        <img src="/assets/img/poto1.jpg" alt="Foto Keluarga" width="500" height="300" class="img-fluid rounded">
-      </div>
+    <div class="col-lg-12">
+      <h2 class="text-center">Dana Family</h2>
     </div>
 
     <!-- Profil Anggota -->
@@ -26,7 +24,7 @@
       </div>
       <!-- Anggota 2 -->
       <div class="col-lg-3 col-md-4 col-sm-6 d-flex flex-column justify-content-center align-items-center my-3">
-        <img src="/assets/img/irgic.jpg" alt="Anggota 2" width="150" height="150" class="rounded-circle">
+        <img src="/assets/img/Irgi.jpg" alt="Anggota 2" width="150" height="150" class="rounded-circle">
         <h3 class="mt-3">Irgi Cahya</h3>
         <p class="text-center">Desain</p>
       </div>
