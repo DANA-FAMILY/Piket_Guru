@@ -12,29 +12,27 @@
             <input type="date" id="tanggal" v-model="selectedDate" @change="onDateChange" />
           </div>
           <div class="my-3 text-muted">
-            Menampilkan {{ visitors.length }} dari {{ jumlah }}
+            menampilkan {{ visitors.length }} dari {{ jumlah }}
           </div>
           <div id="printableArea">
             <table style="width:100%" class="table text-center">
-              <thead>
-                <tr>
-                  <th rowspan="2">No</th>
-                  <th rowspan="2">Tanggal</th>
-                  <th rowspan="2">Kelas</th>
-                  <th rowspan="2">Guru Ngajar</th>
-                  <th colspan="3">Jumlah Siswa</th>
-                  <th colspan="5">Keterangan</th>
-                </tr>
-                <tr>
-                  <th>Total</th>
-                  <th>Hadir</th>
-                  <th>Tidak Hadir</th>
-                  <th>S</th>
-                  <th>I</th>
-                  <th>A</th>
-                  <th>D</th>
-                </tr>
-              </thead>
+              <tr>
+                <th rowspan="2">No</th>
+                <th rowspan="2">Tanggal</th>
+                <th rowspan="2">Kelas</th>
+                <th rowspan="2">Guru Ngajar</th>
+                <th colspan="3">Jumlah Siswa</th>
+                <th colspan="5">Keterangan</th>
+              </tr>
+              <tr>
+                <th>Total</th>
+                <th>Hadir</th>
+                <th>Tidak Hadir</th>
+                <th>S</th>
+                <th>I</th>
+                <th>A</th>
+                <th>D</th>
+              </tr>
               <tbody>
                 <tr v-for="(visitor, i) in visitors" :key="i">
                   <td>{{ i + 1 }}</td>
@@ -51,9 +49,11 @@
                 </tr>
               </tbody>
             </table>
+            <!-- <h6 class="text-end mt-5">Tasikmalaya,...,...,20..</h6> -->
           </div>
         </form>
       </div>
+      <!-- <h6 class="p-3 text-end mt-5">......................................</h6> -->
       <NuxtLink to="/rekapkelas/absen" class="col-lg-6 d-flex justify-content-end">
         <button type="button" class="btn btn-primary btn-lg rounded-5 px-5">Tambah Data</button>
       </NuxtLink>
@@ -64,6 +64,7 @@
   </div>
 </template>
 
+
 <style scoped>
 table, th, td {
   border: 1px solid black;
@@ -72,50 +73,56 @@ table, th, td {
 </style>
 
 <script setup>
-const supabase = useSupabaseClient();
 
+const supabase = useSupabaseClient();
 const visitors = ref([]);
 const jumlah = ref(0);
 const selectedDate = ref(getTodayDate());
 
-// Mendapatkan tanggal hari ini
 function getTodayDate() {
   return new Date().toISOString().split('T')[0];
 }
 
-// Mendapatkan data dari Supabase
-const getRekapKelas = async () => {
+const getrekapkelas = async (date = selectedDate.value) => {
   const { data, error } = await supabase
     .from('rekapkelas')
-    .select('*, namaguru(NamaGuru), kelas(nama)')
-    .eq('tanggal', selectedDate.value);
-
+    .select(`*, namaguru(NamaGuru), kelas(nama)`)
+    .eq('tanggal', date);
   if (data) {
-    visitors.value = data;
-    jumlah.value = data.length;
-  } else {
-    console.error(error);
+    visitors.value = data.sort((a, b) => new Date(b.tanggal) - new Date(a.tanggal));
   }
 };
 
-// Fungsi untuk menyortir data berdasarkan jurusan
-const sortedVisitors = computed(() => {
-  const jurusanOrder = ['PPLG', 'TJKT', 'TBSM', 'DKV', 'TOI']; // Atur urutan jurusan
-  return visitors.value.sort((a, b) => {
-    const jurusanA = jurusanOrder.indexOf(a.kelas.nama.split(' ')[1]) || Infinity;
-    const jurusanB = jurusanOrder.indexOf(b.kelas.nama.split(' ')[1]) || Infinity;
-    return jurusanA - jurusanB;
-  });
-});
-
-// Fungsi yang dipanggil saat tanggal berubah
-const onDateChange = () => {
-  getRekapKelas();
+const totalrekapkelas = async (date = selectedDate.value) => {
+  const { data, count } = await supabase
+    .from('rekapkelas')
+    .select("*", { count: 'exact' })
+    .eq('tanggal', date);
+  if (data) jumlah.value = count;
 };
 
-// Fungsi untuk mencetak tabel
+const onDateChange = () => {
+  getrekapkelas();
+  totalrekapkelas();
+};
+
+const getFormattedTodayDate = () => {
+  const today = new Date();
+  const day = String(today.getDate()).padStart(2, '0');
+  const month = String(today.getMonth() + 1).padStart(2, '0');
+  const year = today.getFullYear();
+  return `${day}/${month}/${year}`;
+};
+
+
 const printTable = () => {
-  const printContents = document.getElementById('printableArea').innerHTML;
+  const navbar = document.getElementById('navbar').outerHTML; // Ambil isi navbar
+  const printContents = document.getElementById('printableArea').innerHTML; // Ambil isi tabel
+  const formattedDate = getFormattedTodayDate();
+  const tandaTangan = `
+    <h6 class="text-end mt-5">Tasikmalaya, ${formattedDate}</h6>
+    <h6 class="text-end mt-5">............................................</h6>
+  `;
   const originalContents = document.body.innerHTML;
 
   document.body.innerHTML = `
@@ -131,20 +138,24 @@ const printTable = () => {
         </style>
       </head>
       <body>
+        ${navbar}
         <h2 class="text-center">REKAPITULASI ABSENSI KELAS</h2>
         ${printContents}
+        ${tandaTangan}
       </body>
     </html>
   `;
 
   window.print();
-  document.body.innerHTML = originalContents;
+  document.body.innerHTML = originalContents; 
+
   window.location.reload();
 };
 
-// Memuat data saat halaman diakses
-onMounted(() => {
-  getRekapKelas();
-});
-</script>
 
+onMounted(() => {
+  getrekapkelas();
+  totalrekapkelas();
+});
+
+</script>
