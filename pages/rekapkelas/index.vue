@@ -73,67 +73,49 @@ table, th, td {
 
 <script setup>
 const supabase = useSupabaseClient();
+
 const visitors = ref([]);
 const jumlah = ref(0);
 const selectedDate = ref(getTodayDate());
 
-// Fungsi untuk mendapatkan tanggal hari ini
+// Mendapatkan tanggal hari ini
 function getTodayDate() {
   return new Date().toISOString().split('T')[0];
 }
 
-// Fungsi untuk mendapatkan data rekap kelas
-const getrekapkelas = async (date = selectedDate.value) => {
+// Mendapatkan data dari Supabase
+const getRekapKelas = async () => {
   const { data, error } = await supabase
     .from('rekapkelas')
-    .select(`*, namaguru(NamaGuru), kelas(nama)`)
-    .eq('tanggal', date);
+    .select('*, namaguru(NamaGuru), kelas(nama)')
+    .eq('tanggal', selectedDate.value);
 
   if (data) {
-    // Sorting data berdasarkan urutan kelas: X, XI, XII
-    visitors.value = data.sort((a, b) => {
-      const kelasOrder = ['X', 'XI', 'XII'];
-      const kelasA = kelasOrder.indexOf(a.kelas.nama);
-      const kelasB = kelasOrder.indexOf(b.kelas.nama);
-      return kelasA - kelasB;
-    });
+    visitors.value = data;
+    jumlah.value = data.length;
+  } else {
+    console.error(error);
   }
 };
 
-// Fungsi untuk menghitung total data
-const totalrekapkelas = async (date = selectedDate.value) => {
-  const { data, count } = await supabase
-    .from('rekapkelas')
-    .select('*', { count: 'exact' })
-    .eq('tanggal', date);
+// Fungsi untuk menyortir data berdasarkan jurusan
+const sortedVisitors = computed(() => {
+  const jurusanOrder = ['PPLG', 'TJKT', 'TBSM', 'DKV', 'TOI']; // Atur urutan jurusan
+  return visitors.value.sort((a, b) => {
+    const jurusanA = jurusanOrder.indexOf(a.kelas.nama.split(' ')[1]) || Infinity;
+    const jurusanB = jurusanOrder.indexOf(b.kelas.nama.split(' ')[1]) || Infinity;
+    return jurusanA - jurusanB;
+  });
+});
 
-  if (data) jumlah.value = count;
-};
-
-// Fungsi untuk menangani perubahan tanggal
+// Fungsi yang dipanggil saat tanggal berubah
 const onDateChange = () => {
-  getrekapkelas();
-  totalrekapkelas();
-};
-
-// Fungsi untuk memformat tanggal saat ini
-const getFormattedTodayDate = () => {
-  const today = new Date();
-  const day = String(today.getDate()).padStart(2, '0');
-  const month = String(today.getMonth() + 1).padStart(2, '0');
-  const year = today.getFullYear();
-  return `${day}/${month}/${year}`;
+  getRekapKelas();
 };
 
 // Fungsi untuk mencetak tabel
 const printTable = () => {
-  const navbar = document.getElementById('navbar')?.outerHTML || ''; // Ambil isi navbar
-  const printContents = document.getElementById('printableArea').innerHTML; // Ambil isi tabel
-  const formattedDate = getFormattedTodayDate();
-  const tandaTangan = `
-    <h6 class="text-end mt-5">Tasikmalaya, ${formattedDate}</h6>
-    <h6 class="text-end mt-5">............................................</h6>
-  `;
+  const printContents = document.getElementById('printableArea').innerHTML;
   const originalContents = document.body.innerHTML;
 
   document.body.innerHTML = `
@@ -149,23 +131,20 @@ const printTable = () => {
         </style>
       </head>
       <body>
-        ${navbar}
         <h2 class="text-center">REKAPITULASI ABSENSI KELAS</h2>
         ${printContents}
-        ${tandaTangan}
       </body>
     </html>
   `;
 
   window.print();
   document.body.innerHTML = originalContents;
-
   window.location.reload();
 };
 
 // Memuat data saat halaman diakses
 onMounted(() => {
-  getrekapkelas();
-  totalrekapkelas();
+  getRekapKelas();
 });
 </script>
+
