@@ -15,7 +15,7 @@
           <!-- Input Nama Guru -->
           <div class="mb-3">
             <select
-              v-model="form.namaguru"
+              v-model="form.NamaGuruMengajar"
               class="form-control form-control-lg form-select rounded-5 mb-2"
               required
             >
@@ -142,6 +142,7 @@ const objectives = ref([])
 const members = ref([])
 
 const form = ref({
+  NamaGuruMengajar: "",
   kelas: "",
   total: "",
   hadir: 0,
@@ -155,6 +156,7 @@ const form = ref({
 // Fungsi untuk mengosongkan form
 const resetForm = () => {
   form.value = {
+    NamaGuruMengajar: "",
     kelas: "",
     total: "",
     hadir: 0,
