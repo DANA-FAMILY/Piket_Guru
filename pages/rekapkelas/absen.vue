@@ -4,36 +4,52 @@
       <div class="col-lg-12">
         <h2 class="text-center p-1 m-1">Presensi Kelas</h2>
         <form @submit.prevent="KirimData">
-          <div class="col-lg-12 d-flex justify-content-end">
+          <div class="col-lg-12 d-flex justify-content-end ">
             <NuxtLink to="/kehadiran/tambah" class="text-decoration-none p-3">
               <p>Kehadiran Guru</p>
             </NuxtLink>
             <NuxtLink to="/rekapkelas" class="text-decoration-none p-3">
-              <p>Riwayat Prensensi kelas</p>
+              <p>Riwayat Presensi Kelas</p>
             </NuxtLink>
           </div>
-          
           <!-- Input Nama Guru -->
           <div class="mb-3">
-            <select v-model="form.namaguru" class="form-control form-control-lg form-select rounded-5 mb-2" required>
-              <option value="" selected>Nama Guru Mengajar</option>
-              <option v-for="(member, i) in members" :key="i" :value="member.id">{{ member.NamaGuru }}</option>
+            <select
+              v-model="form.namaguru"
+              class="form-control form-control-lg form-select rounded-5 mb-2"
+              required
+            >
+              <option value="" disabled selected>Nama Guru Mengajar</option>
+              <option v-for="(member, i) in members" :key="i" :value="member.id">
+                {{ member.NamaGuru }}
+              </option>
+            </select>
+          </div>
+          <!-- Input Kelas -->
+          <div class="mb-3">
+            <select
+              v-model="form.kelas"
+              class="form-control form-control-lg form-select rounded-5 mb-2"
+              required
+            >
+              <option value="" disabled selected>Kelas</option>
+              <option v-for="(item, i) in objectives" :key="i" :value="item.id">
+                {{ item.nama }}
+              </option>
             </select>
           </div>
 
-          <!-- Input Kelas -->
-          <div class="mb-3">
-            <select v-model="form.kelas" class="form-control form-control-lg form-select rounded-5 mb-2" required>
-              <option value="">Kelas</option>
-              <option v-for="(item, i) in objectives" :key="i" :value="item.id">{{ item.nama }}</option>
-            </select>
-          </div>
-          
           <!-- Input Total Siswa -->
           <div class="col-md-12">
-            <input v-model="form.total" type="number" class="form-control form-control-lg rounded-5" placeholder="Total Siswa.." required />
+            <input
+              v-model="form.total"
+              type="number"
+              class="form-control form-control-lg rounded-5"
+              placeholder="Total Siswa.."
+              required
+            />
           </div>
-          
+
           <!-- Input Hadir dan Tidak Hadir -->
           <div class="mb-4">
             <div class="row">
@@ -57,6 +73,8 @@
                   required
                 />
               </div>
+
+              <!-- Input Sakit, Izin, Alpa, Dispen -->
               <div class="col-md-4 p-2">
                 <input
                   v-model="form.sakit"
@@ -102,9 +120,13 @@
 
           <!-- Tombol Kirim dan Kembali -->
           <div class="col-lg-6 d-flex justify-content-start">
-            <button type="submit" class="btn btn-primary btn-lg rounded-5 px-5">Kirim</button>
+            <button type="submit" class="btn btn-primary btn-lg rounded-5 px-5">
+              Kirim
+            </button>
             <NuxtLink to="/home">
-              <button type="button" class="btn btn-primary btn-lg rounded-5 px-5">Kembali</button>
+              <button type="button" class="btn btn-primary btn-lg rounded-5 px-5">
+                Kembali
+              </button>
             </NuxtLink>
           </div>
         </form>
@@ -178,12 +200,13 @@ const KirimData = async () => {
     parseInt(form.value.alpa || 0) +
     parseInt(form.value.dispen || 0)
 
+  // Pastikan nilai `sakit`, `izin`, `alpa`, `dispen` sesuai dengan `tidak_hadir`
   if (totalInputTidakHadir !== totalTidakHadir) {
     alert(`Jumlah Sakit + Izin + Alpa + Dispen harus sama dengan ${totalTidakHadir}`)
     return
   }
 
-  const { error } = await supabase.from('rekapkelas').insert([form.value])
+  const { error } = await supabase.from("rekapkelas").insert([form.value])
   if (!error) {
     alert("Presensi Berhasil")
     resetForm()
@@ -191,12 +214,12 @@ const KirimData = async () => {
 }
 
 const getGuru = async () => {
-  const { data, error } = await supabase.from('guru').select('*')
+  const { data } = await supabase.from("guru").select("*")
   if (data) members.value = data
 }
 
 const getKelas = async () => {
-  const { data, error } = await supabase.from('kelas').select('*')
+  const { data } = await supabase.from("kelas").select("*")
   if (data) objectives.value = data
 }
 
@@ -205,19 +228,3 @@ onMounted(() => {
   getGuru()
 })
 </script>
-
-<style scoped>
-/* Styling untuk placeholder */
-input::placeholder {
-  color: #6c757d; /* Warna abu-abu */
-  font-style: italic; /* Gaya miring */
-}
-
-input:focus::placeholder {
-  color: transparent; /* Sembunyikan placeholder saat fokus */
-}
-
-input:not(:placeholder-shown) {
-  border-color: #007bff; /* Border biru saat ada nilai */
-}
-</style>
