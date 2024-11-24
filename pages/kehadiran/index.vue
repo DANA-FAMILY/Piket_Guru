@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-lg-12">
-        <h2 class="text-center my-3">Kehadiran Guru</h2>
+        <h2 class="text-center my-3">Rekapitulasi Kehadiran Guru</h2>
         <div class="my-3 d-flex justify-content-end gap-3">
           <button type="button" class="btn btn-success btn-lg rounded-5 px-5" @click="printTable">Print</button>
         </div>
