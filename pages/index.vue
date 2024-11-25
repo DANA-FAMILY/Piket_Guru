@@ -26,7 +26,7 @@
 
     <!-- Link "Created By Dana Family" -->
     <div class="row">
-      <div class="col-lg-12 d-flex justify-content-center mt-3">
+      <div class="col-lg-12 d-flex justify-content-center mt-1">
         <NuxtLink to="/created" class="text-decoration-none">
           <h5>Created By Dana Family</h5>
         </NuxtLink>
