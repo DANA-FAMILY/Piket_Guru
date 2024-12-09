@@ -20,13 +20,13 @@
             </select>
           </div>
           <div class="mb-3">
+            <input v-model="form.keterangan" type="text" class="form-control form-control-lg rounded-5" placeholder="Keterangan.." required />
+          </div>
+          <div class="mb-3">
             <input v-model="form.alasan" type="text" class="form-control form-control-lg rounded-5" placeholder="Alasan.." required />
           </div>
           <div class="mb-3">
             <input v-model="form.tugas" type="text" class="form-control form-control-lg rounded-5" placeholder="Tugas.." required />
-          </div>
-          <div class="mb-3">
-            <input v-model="form.keterangan" type="text" class="form-control form-control-lg rounded-5" placeholder="Keterangan.." required />
           </div>
           <div class="col-lg-6 d-flex justify-content-start">
             <button type="submit" class="btn btn-primary btn-lg rounded-5 px-5">Kirim</button>
@@ -51,9 +51,9 @@ const objectives = ref([])
 const form = ref({
   NamaGuru: "",
   MataPelajaran: "",
+  keterangan: "",
   alasan: "",
   tugas: "",
-  keterangan: "",
 })
 
 // Fungsi untuk mengirim data ke tabel 'kehadiran' di Supabase
